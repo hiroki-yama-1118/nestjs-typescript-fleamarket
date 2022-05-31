@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ItemStatus } from './item-status.enum';
 import { Item } from './item.model';
 import { ItemsService } from './items.service';
@@ -10,6 +10,11 @@ export class ItemsController {
   @Get()
   findAll(): Item[] {
     return this.itemsService.findAll();
+  }
+
+  @Get(':id') // /items/id
+  findById(@Param('id') id: string): Item {
+    return this.itemsService.findById(id);
   }
   // リクエストボディから商品のパラメーターを取得
   //  @Body()を使用 引数にキーを記述　横に変数名と型を記入
