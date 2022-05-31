@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemStatus } from './item-status.enum';
 import { Item } from './item.model';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ItemsService {
@@ -18,6 +19,7 @@ export class ItemsService {
   create(createItemDto: CreateItemDto): Item {
     //新しくitemを定義
     const item: Item = {
+      id: uuid(), //自動採番
       ...createItemDto, //createItemDtoの中身を展開
       status: ItemStatus.ON_SALE,
     };
