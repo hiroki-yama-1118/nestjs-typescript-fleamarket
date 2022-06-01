@@ -10,8 +10,8 @@ export class ItemsService {
   constructor(private readonly itemRepository: ItemRepository) {}
   private items: Item[] = [];
 
-  findAll(): Item[] {
-    return this.items;
+  async findAll(): Promise<Item[]> {
+    return await this.itemRepository.find();
   }
 
   findById(id: string): Item {
@@ -34,11 +34,11 @@ export class ItemsService {
     // return item;
   }
 
-  updateStatus(id: string): Item {
-    const item = this.findById(id);
-    item.status = ItemStatus.SOLD_OUT;
-    return item;
-  }
+  // updateStatus(id: string): Item {
+  //   const item = this.findById(id);
+  //   item.status = ItemStatus.SOLD_OUT;
+  //   return item;
+  // }
 
   delete(id: string): void {
     this.items = this.items.filter((item) => item.id !== id);
