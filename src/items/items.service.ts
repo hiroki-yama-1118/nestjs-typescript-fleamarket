@@ -14,8 +14,9 @@ export class ItemsService {
     return await this.itemRepository.find();
   }
 
-  findById(id: string): Item {
-    const found = this.items.find((item) => item.id === id);
+  async findById(id: string): Promise<Item> {
+    // const found = this.items.find((item) => item.id === id);
+    const found = await this.itemRepository.findOne(id);
     if (!found) {
       throw new NotFoundException();
     }

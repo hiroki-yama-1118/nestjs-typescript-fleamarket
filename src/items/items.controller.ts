@@ -23,8 +23,8 @@ export class ItemsController {
   }
 
   @Get(':id') // /items/id
-  findById(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.itemsService.findById(id);
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.itemsService.findById(id);
   }
   // リクエストボディから商品のパラメーターを取得
   //  @Body()を使用 引数にキーを記述　横に変数名と型を記入
