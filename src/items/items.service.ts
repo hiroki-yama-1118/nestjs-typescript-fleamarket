@@ -42,7 +42,12 @@ export class ItemsService {
     return item;
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, user: User): Promise<void> {
+    const item = await this.findById(id);
+    if (item.userId !== user.id) {
+      // throw new BadRequestException('他人の商品を削除することはできません');
+      console.log('他人の商品を削除することはできません'); //throw new BadRequestExceptionができない
+    }
     await this.itemRepository.delete({ id });
     // this.items = this.items.filter((item) => item.id !== id);
   }
