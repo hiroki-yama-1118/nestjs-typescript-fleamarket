@@ -9,8 +9,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { Item } from 'src/entities/item.entity';
+import { User } from 'src/entities/user.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 // import { ItemStatus } from './item-status.enum';
 import { ItemsService } from './items.service';
@@ -34,20 +36,9 @@ export class ItemsController {
   @UseGuards(JwtAuthGuard)
   async create(
     @Body() createItemDto: CreateItemDto,
-    //DTOを使って書き換え
-    // @Body('id') id: string,
-    // @Body('name') name: string,
-    // @Body('price') price: number,
-    // @Body('description') description: string,
+    @GetUser() user: User,
   ): Promise<Item> {
-    //serviceでitemを定義する
-    // const item: Item = {
-    //   id,
-    //   name,
-    //   price,
-    //   description,
-    //   status: ItemStatus.ON_SALE,
-    // };
+    console.log(user);
     return await this.itemsService.create(createItemDto);
   }
 
