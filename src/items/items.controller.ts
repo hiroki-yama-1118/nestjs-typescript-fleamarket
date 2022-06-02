@@ -46,8 +46,11 @@ export class ItemsController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
-    return await this.itemsService.updateStatus(id);
+  async updateStatus(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User,
+  ): Promise<Item> {
+    return await this.itemsService.updateStatus(id, user);
   }
 
   @Delete(':id')
