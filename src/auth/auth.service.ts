@@ -35,4 +35,8 @@ export class AuthService {
       'ユーザー名またはパスワードを確認してください',
     );
   }
+
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
 }

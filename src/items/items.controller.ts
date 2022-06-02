@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,6 +9,7 @@ import {
   Patch,
   Post,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
@@ -18,6 +20,7 @@ import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
 
 @Controller('items')
+@UseInterceptors(ClassSerializerInterceptor) //パスワードをレスポンスから外す
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
@@ -38,8 +41,7 @@ export class ItemsController {
     @Body() createItemDto: CreateItemDto,
     @GetUser() user: User,
   ): Promise<Item> {
-    console.log(user);
-    return await this.itemsService.create(createItemDto);
+    return await this.itemsService.create(createItemDto, user);
   }
 
   @Patch(':id')

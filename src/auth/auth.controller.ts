@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CredentialsDto } from './dto/credentials.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -18,5 +19,11 @@ export class AuthController {
     @Body() credentialsDto: CredentialsDto,
   ): Promise<{ accessToken: string }> {
     return await this.authService.signIn(credentialsDto);
+  }
+
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async findAll(): Promise<User[]> {
+    return await this.authService.findAll();
   }
 }

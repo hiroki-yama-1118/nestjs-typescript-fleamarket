@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Item } from 'src/entities/item.entity';
+import { User } from 'src/entities/user.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemStatus } from './item-status.enum';
 // import { v4 as uuid } from 'uuid';
@@ -22,16 +23,8 @@ export class ItemsService {
     return found;
   }
 
-  async create(createItemDto: CreateItemDto): Promise<Item> {
-    return await this.itemRepository.createItme(createItemDto);
-    // //新しくitemを定義
-    // const item: Item = {
-    //   id: uuid(), //自動採番
-    //   ...createItemDto, //createItemDtoの中身を展開
-    //   status: ItemStatus.ON_SALE,
-    // };
-    // this.items.push(item);
-    // return item;
+  async create(createItemDto: CreateItemDto, user: User): Promise<Item> {
+    return await this.itemRepository.createItme(createItemDto, user);
   }
 
   async updateStatus(id: string): Promise<Item> {
