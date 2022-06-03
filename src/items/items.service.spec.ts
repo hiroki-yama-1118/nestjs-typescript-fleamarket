@@ -82,32 +82,32 @@ describe('ItemsServiceTest', () => {
     });
   });
 
-  // describe('create', () => {
-  //   it('正常系', async () => {
-  //     const expected = {
-  //       id: 'test-id',
-  //       name: 'PC',
-  //       price: 50000,
-  //       description: '',
-  //       status: ItemStatus.ON_SALE,
-  //       createdAt: '',
-  //       updateAt: '',
-  //       userId: mockUser1.id,
-  //       user: mockUser1,
-  //     };
+  describe('create', () => {
+    it('正常系', async () => {
+      const expected = {
+        id: 'test-id',
+        name: 'PC',
+        price: 50000,
+        description: '',
+        status: ItemStatus.ON_SALE,
+        createdAt: '',
+        updateAt: '',
+        userId: mockUser1.id,
+        user: mockUser1,
+      };
 
-  //     itemRepository.createItem.mockResolvedValue(expected);
-  //     const result = await itemsService.create(
-  //       {
-  //         name: 'PC',
-  //         price: 50000,
-  //         description: '',
-  //       },
-  //       mockUser1,
-  //     );
-  //     expect(result).toEqual(expected);
-  //   });
-  // });
+      itemRepository.createItem.mockResolvedValue(expected);
+      const result = await itemsService.create(
+        {
+          name: 'PC',
+          price: 50000,
+          description: '',
+        },
+        mockUser1,
+      );
+      expect(result).toEqual(expected);
+    });
+  });
 
   describe('updateStatus', () => {
     const mockItem = {
@@ -151,11 +151,11 @@ describe('ItemsServiceTest', () => {
       await itemsService.delete('test-id', mockUser1);
       expect(itemRepository.delete).toHaveBeenCalled();
     });
-    // it('異常系：他人の商品を削除', async () => {
-    //   itemRepository.findOne.mockResolvedValue(mockItem);
-    //   await expect(itemsService.delete('test-id', mockUser2)).rejects.toThrow(
-    //     BadRequestException,
-    //   );
-    // });
+    it('異常系：他人の商品を削除', async () => {
+      itemRepository.findOne.mockResolvedValue(mockItem);
+      await expect(itemsService.delete('test-id', mockUser2)).rejects.toThrow(
+        BadRequestException,
+      );
+    });
   });
 });
