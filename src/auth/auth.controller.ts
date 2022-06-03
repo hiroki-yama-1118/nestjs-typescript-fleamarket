@@ -21,9 +21,9 @@ export class AuthController {
     return await this.authService.signIn(credentialsDto);
   }
 
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  async findAll(): Promise<User[]> {
-    return await this.authService.findAll();
-  }
+  // @Get()
+  // @UseGuards(JwtAuthGuard)
+  // async findAll(): Promise<User[]> {
+  //   return await this.authService.findAll();
+  // }
 }
