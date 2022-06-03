@@ -36,7 +36,7 @@ export class AuthService {
     );
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
+  // async findAll(): Promise<User[]> {
+  //   return await this.userRepository.find();
+  // }
 }
