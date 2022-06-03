@@ -13,13 +13,11 @@ import { ItemRepository } from './item.repository';
 @Injectable()
 export class ItemsService {
   constructor(private readonly itemRepository: ItemRepository) {}
-  // private items: Item[] = [];
   async findAll(): Promise<Item[]> {
     return await this.itemRepository.find();
   }
 
   async findById(id: string): Promise<Item> {
-    // const found = this.items.find((item) => item.id === id);
     const found = await this.itemRepository.findOne(id);
     if (!found) {
       throw new NotFoundException();
@@ -28,7 +26,7 @@ export class ItemsService {
   }
 
   async create(createItemDto: CreateItemDto, user: User): Promise<Item> {
-    return await this.itemRepository.createItme(createItemDto, user);
+    return await this.itemRepository.createItem(createItemDto, user);
   }
 
   async updateStatus(id: string, user: User): Promise<Item> {
@@ -45,8 +43,8 @@ export class ItemsService {
   async delete(id: string, user: User): Promise<void> {
     const item = await this.findById(id);
     if (item.userId !== user.id) {
-      // throw new BadRequestException('他人の商品を削除することはできません');
-      console.log('他人の商品を削除することはできません'); //throw new BadRequestExceptionができない
+      throw new BadRequestException('他人の商品を削除することはできません');
+      // console.log('他人の商品を削除することはできません'); //throw new BadRequestExceptionができない
     }
     await this.itemRepository.delete({ id });
     // this.items = this.items.filter((item) => item.id !== id);
