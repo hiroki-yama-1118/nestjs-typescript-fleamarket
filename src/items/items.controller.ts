@@ -63,6 +63,6 @@ export class ItemsController {
     @Param('id', ParseUUIDPipe) id: string,
     @GetUser() user: User,
   ): Promise<void> {
-    this.itemsService.delete(id, user);
+    await this.itemsService.delete(id, user);
   }
 }
