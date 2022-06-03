@@ -6,6 +6,8 @@ import { ItemsController } from './items.controller';
 import { ItemsService } from './items.service';
 
 @Module({
+  //リポジトリを使用するためTypeOrmModule.forFeature([ItemRepository])を記載
+  //AuthModuleを使用するため
   imports: [TypeOrmModule.forFeature([ItemRepository]), AuthModule],
   controllers: [ItemsController],
   providers: [ItemsService],

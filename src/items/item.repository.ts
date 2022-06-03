@@ -8,6 +8,7 @@ import { User } from 'src/entities/user.entity';
 export class ItemRepository extends Repository<Item> {
   async createItem(createItemDto: CreateItemDto, user: User): Promise<Item> {
     const { name, price, description } = createItemDto;
+    //itemリポジトリの親クラスであるrepositoryクラスのメソッドであるcreateが使用できる
     const item = this.create({
       name,
       price,
@@ -18,6 +19,7 @@ export class ItemRepository extends Repository<Item> {
       user,
     });
 
+    //DBに登録するためrepositoryクラスのメソッドであるsaveを使用
     await this.save(item);
     return item;
   }

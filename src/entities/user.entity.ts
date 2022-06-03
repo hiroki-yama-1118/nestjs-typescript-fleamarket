@@ -19,6 +19,8 @@ export class User {
   status: UserStatus;
 
   //１対多の関係
+  //第一引数：関連先の型をコールバック
+  //第二引数：関連先のプロパティをコールバック
   @OneToMany(() => Item, (item) => item.user)
   items: Item[];
 }

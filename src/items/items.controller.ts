@@ -24,6 +24,7 @@ import { ItemsService } from './items.service';
 
 @Controller('items')
 @UseInterceptors(ClassSerializerInterceptor) //パスワードをレスポンスから外す
+//サービスをDIする
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) {}
 
@@ -39,7 +40,9 @@ export class ItemsController {
   // リクエストボディから商品のパラメーターを取得
   //  @Body()を使用 引数にキーを記述　横に変数名と型を記入
   @Post()
+  //ロールスガード
   @Role(UserStatus.PREMIUM)
+  //ガードを適用、ロールスガードも追加
   @UseGuards(JwtAuthGuard, RolesGuard)
   async create(
     @Body() createItemDto: CreateItemDto,
@@ -49,6 +52,7 @@ export class ItemsController {
   }
 
   @Patch(':id')
+  //ガードを適用
   @UseGuards(JwtAuthGuard)
   async updateStatus(
     @Param('id', ParseUUIDPipe) id: string,
@@ -58,6 +62,7 @@ export class ItemsController {
   }
 
   @Delete(':id')
+  //ガードを適用
   @UseGuards(JwtAuthGuard)
   async delete(
     @Param('id', ParseUUIDPipe) id: string,

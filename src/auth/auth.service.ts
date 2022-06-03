@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthService {
   constructor(
     private userRepository: UserRepository,
+    //JWTを使用するためDIする
     private jwtService: JwtService,
   ) {}
 
@@ -31,6 +32,7 @@ export class AuthService {
       const accessToken = await this.jwtService.sign(payload);
       return { accessToken };
     }
+    //認証失敗時の例外処理
     throw new UnauthorizedException(
       'ユーザー名またはパスワードを確認してください',
     );

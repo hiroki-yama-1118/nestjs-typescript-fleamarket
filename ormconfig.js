@@ -1,3 +1,4 @@
+//ORMを用いてDBを作成するため設定を記載
 module.exports = {
   type: 'postgres',
   host: 'localhost',
@@ -6,10 +7,10 @@ module.exports = {
   password: 'postgres',
   database: 'postgres',
   autoLoadEntities: true, //ORMにEntityを毎回追加することを省略できる
-  entities: ['dist/entities/*.entity.js'],
-  migrations: ['dist/migrations/*.js'],
+  entities: ['dist/entities/*.entity.js'], //マイグレーションファイルを作成する時にどのファイルを使用するかの設定
+  migrations: ['dist/migrations/*.js'], //どのマイグレーションファイルを指定するか
   cli: {
-    entitiesDir: '../entities',
+    entitiesDir: '../entities', //ファイル作成の出力先
     migrationsDir: '../migrations',
   },
 };

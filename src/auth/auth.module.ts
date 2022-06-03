@@ -11,8 +11,11 @@ import { UserRepository } from './user.repository';
 
 @Module({
   imports: [
+    //モジュールにリポジトリを登録
     TypeOrmModule.forFeature([UserRepository]),
+    //JWTを使用するため
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    //JWTの設定
     JwtModule.register({
       secret: 'secretKey123',
       signOptions: {
@@ -21,7 +24,9 @@ import { UserRepository } from './user.repository';
     }),
   ],
   controllers: [AuthController],
+  //JWTを使用するため、ガードも、ロールスガードも
   providers: [AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
+  //JWTをItemで使用したいため、ガードも、ロールスガードも
   exports: [JwtStrategy, JwtAuthGuard, RolesGuard],
 })
 export class AuthModule {}

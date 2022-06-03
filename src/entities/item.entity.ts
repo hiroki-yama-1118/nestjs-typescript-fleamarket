@@ -4,6 +4,8 @@ import { User } from './user.entity';
 
 @Entity()
 export class Item {
+  //自動採番であることを示す
+  //idはuuidにしたいので引数に指定、指定しないと連番になる
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,6 +28,8 @@ export class Item {
   updateAt: string;
 
   //多対１
+  //第一引数：関連先の型をコールバック
+  //第二引数：関連先のプロパティをコールバック
   @ManyToOne(() => User, (user) => user.items)
   user: User;
 

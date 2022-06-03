@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { UserStatus } from '../user-status.enum';
 
+//ユーザー登録用
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()

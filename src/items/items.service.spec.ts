@@ -5,7 +5,7 @@ import { ItemStatus } from './item-status.enum';
 import { ItemRepository } from './item.repository';
 import { ItemsService } from './items.service';
 
-//DBをモック化
+//ユニットテストであり、DB接続行わないため、リポジトリをMock化する
 const mockItemRepository = () => ({
   find: jest.fn(), //findという名のmock関数を定義
   findOne: jest.fn(),
@@ -28,36 +28,45 @@ const mockUser2 = {
 };
 
 describe('ItemsServiceTest', () => {
+  //テストモジュールからItemsServiceとItemRepositoryを受け取る変数定義
   let itemsService;
   let itemRepository;
-  //毎テスト前にItemServeiceをインスタンス化する
+  //ItemsServiceはクラスであるため毎テスト前にインスタンス化する必要がある
+  //ItemServiceはItemRepositoryに依存しているため、ItemRepositoryのインスタンス化も必要
   beforeEach(async () => {
+    //実際のモジュールと同じように記載
     const module = await Test.createTestingModule({
       providers: [
         ItemsService,
         {
-          provide: ItemRepository,
-          useFactory: mockItemRepository,
+          provide: ItemRepository, //モックリポジトリを実際のリポジトリとして使用するため
+          useFactory: mockItemRepository, //モックリポジトリを実際のリポジトリとして使用するため
         },
       ],
-    }).compile();
+    }).compile(); //最後にモジュールのコンパイル
 
+    //モジュールから受け取る
     itemsService = module.get<ItemsService>(ItemsService);
     itemRepository = module.get<ItemRepository>(ItemRepository);
   });
 
   describe('findAll', () => {
     it('正常系', async () => {
+      //空オブジェクトが帰ってくるかどうが
       const expected = [];
+      //モック関数の戻り値を定義するためmockResolvedValueを使用
+      //DBからデータが返ってきたと仮定
       itemRepository.find.mockResolvedValue(expected);
+      //テスト対象のfindAll()を呼ぶ
       const result = await itemsService.findAll();
-
+      //これらの値が等しいかどうかをテスト
       expect(result).toEqual(expected);
     });
   });
 
   describe('findById', () => {
     it('正常系', async () => {
+      //戻り値となる商品を定義、仮想のDBからのデータ
       const expected = {
         id: 'test-id',
         name: 'PC',
@@ -75,8 +84,11 @@ describe('ItemsServiceTest', () => {
     });
 
     it('異常系：商品が存在しない', async () => {
+      //商品が存在しない時の仮想のデータ
       itemRepository.findOne.mockResolvedValue(null);
+      //例外時のテスト
       await expect(itemsService.findById('test-id')).rejects.toThrow(
+        //発生する例外
         NotFoundException,
       );
     });
@@ -95,7 +107,6 @@ describe('ItemsServiceTest', () => {
         userId: mockUser1.id,
         user: mockUser1,
       };
-
       itemRepository.createItem.mockResolvedValue(expected);
       const result = await itemsService.create(
         {
@@ -128,6 +139,7 @@ describe('ItemsServiceTest', () => {
     });
     it('異常系：自身の商品を購入', async () => {
       itemRepository.findOne.mockResolvedValue(mockItem);
+      //例外処理
       await expect(
         itemsService.updateStatus('test-id', mockUser1),
       ).rejects.toThrow(BadRequestException);
